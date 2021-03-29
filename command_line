@@ -125,6 +125,6 @@ async def help(ctx):
     embed.add_field(name='Help', value='why', inline=False)
 
     await ctx.send(embed= embed)
-bot.run('Nzg4NTM3MzU0MjQ3ODY0MzUy.X9k8ow.SROsf5QbVTt6N9Diss8I16SpTQk')
+bot.run('token')
 
 
