@@ -93,7 +93,318 @@ async def rps(ctx):
 
 
 
+@bot.command()
+async def ttt(ctx):
+    tictactoe = {
+        'a': 0, 'b': 0, 'c': 0,
+        'd': 0, 'e': 0, 'f': 0,
+        'g': 0, 'h': 0, 'i': 0
+    }
+    tictact = {
+        'a': 0, 'b': 1, 'c': 2,
+        'd': 0, 'e': 1, 'f': 2,
+        'g': 0, 'h': 1, 'i': 2,
+    }
 
+    outcomes = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'}
+    tboard = ['-'] * 3
+    mboard = ['-'] * 3
+    bboard = ['-'] * 3
+
+    ttboard = ['a', 'b', 'c']
+    mmboard = ['d', 'e', 'f']
+    bbboard = ['g', 'h', 'i']
+
+
+    def check(msg):
+        return msg.author == ctx.author and msg.channel == ctx.channel and msg.content.lower()
+
+    win = False
+    await ctx.send('play me in tic tac toe!')
+    await ctx.send('the board is setup a-i corresponding like...')
+    await ctx.send('.\n {} \n {} \n {}'.format(ttboard, mmboard, bbboard))
+    counter = 0
+    while win == False:
+        if counter >= 1:
+            await ctx.channel.purge(limit=6)
+            await ctx.send('.\n {} \n {} \n {}'.format(ttboard, mmboard, bbboard))
+            await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+        #user input
+        ipt = 'o'
+        while ipt not in tictactoe or tictactoe[ipt] >= 1:
+            await ctx.send('please enter your choice a-i \n')
+            ipt = (await bot.wait_for('message', check=check)).content.lower()
+
+        #arrays update
+        tictactoe[ipt] = 1
+        outcomes.discard(ipt)
+
+        # BOARD UPDATE
+        if ipt in ['a', 'b', 'c']:
+            tboard[tictact[ipt]] = 'x'
+        if ipt in ['d', 'e', 'f']:
+            mboard[tictact[ipt]] = 'x'
+        if ipt in ['g', 'h', 'i']:
+            bboard[tictact[ipt]] = 'x'
+
+        # WIN CONDITION USER
+        if tictactoe['a'] == 1 and tictactoe['b'] == 1 and tictactoe['c'] == 1:
+            await ctx.channel.purge(limit=6)
+            await ctx.send('congratulations you win!')
+            await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+            win = True
+            return
+        if tictactoe['d'] == 1 and tictactoe['e'] == 1 and tictactoe['f'] == 1:
+            await ctx.channel.purge(limit=6)
+            await ctx.send('congratulations you win!')
+            await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+            win = True
+            return
+        if tictactoe['g'] == 1 and tictactoe['h'] == 1 and tictactoe['i'] == 1:
+            await ctx.channel.purge(limit=6)
+            await ctx.send('congratulations you win!')
+            await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+            win = True
+            return
+        if tictactoe['a'] == 1 and tictactoe['e'] == 1 and tictactoe['i'] == 1:
+            await ctx.channel.purge(limit=6)
+            await ctx.send('congratulations you win!')
+            await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+            win = True
+            return
+        if tictactoe['c'] == 1 and tictactoe['e'] == 1 and tictactoe['g'] == 1:
+            await ctx.channel.purge(limit=6)
+            await ctx.send('congratulations you win!')
+            await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+            win = True
+            return
+        if tictactoe['a'] == 1 and tictactoe['d'] == 1 and tictactoe['g'] == 1:
+            await ctx.channel.purge(limit=6)
+            await ctx.send('congratulations you win!')
+            await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+            win = True
+            return
+        if tictactoe['b'] == 1 and tictactoe['e'] == 1 and tictactoe['h'] == 1:
+            await ctx.channel.purge(limit=6)
+            await ctx.send('congratulations you win!')
+            await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+            win = True
+            return
+        if tictactoe['c'] == 1 and tictactoe['f'] == 1 and tictactoe['i'] == 1:
+            await ctx.channel.purge(limit=6)
+            await ctx.send('congratulations you win!')
+            await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+            win = True
+            return
+
+        #board print
+        #await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+        await ctx.send('.\n {} \n {} \n {}'.format(ttboard, mmboard, bbboard))
+
+
+        if win == False and outcomes:
+            
+            # wincheck
+            if tictactoe['a'] == 2 and tictactoe['b'] == 2 and tictactoe['c'] != 1:
+                throw = 'c'
+            elif tictactoe['b'] == 2 and tictactoe['c'] == 2 and tictactoe['a'] != 1:
+                throw = 'a'
+            elif tictactoe['c'] == 2 and tictactoe['a'] == 2 and tictactoe['b'] != 1:
+                throw = 'b'
+
+                # def
+            elif tictactoe['d'] == 2 and tictactoe['e'] == 2 and tictactoe['f'] != 1:
+                throw = 'f'
+            elif tictactoe['f'] == 2 and tictactoe['e'] == 2 and tictactoe['d'] != 1:
+                throw = 'd'
+            elif tictactoe['f'] == 2 and tictactoe['d'] == 2 and tictactoe['b'] != 1:
+                throw = 'b'
+
+                # ghi
+            elif tictactoe['g'] == 2 and tictactoe['h'] == 2 and tictactoe['i'] != 1:
+                throw = 'i'
+            elif tictactoe['i'] == 2 and tictactoe['h'] == 2 and tictactoe['g'] != 1:
+                throw = 'g'
+            elif tictactoe['i'] == 2 and tictactoe['g'] == 2 and tictactoe['h'] != 1:
+                throw = 'h'
+
+                # aei
+            elif tictactoe['a'] == 2 and tictactoe['e'] == 2 and tictactoe['i'] != 1:
+                throw = 'i'
+            elif tictactoe['a'] == 2 and tictactoe['i'] == 2 and tictactoe['e'] != 1:
+                throw = 'e'
+            elif tictactoe['i'] == 2 and tictactoe['e'] == 2 and tictactoe['a'] != 1:
+                throw = 'a'
+
+                # ceg
+            elif tictactoe['c'] == 2 and tictactoe['e'] == 2 and tictactoe['g'] != 1:
+                throw = 'g'
+            elif tictactoe['g'] == 2 and tictactoe['e'] == 2 and tictactoe['c'] != 1:
+                throw = 'c'
+            elif tictactoe['g'] == 2 and tictactoe['c'] == 2 and tictactoe['e'] != 1:
+                throw = 'e'
+
+                # adg
+            elif tictactoe['a'] == 2 and tictactoe['d'] == 2 and tictactoe['g'] != 1:
+                throw = 'g'
+            elif tictactoe['g'] == 2 and tictactoe['d'] == 2 and tictactoe['a'] != 1:
+                throw = 'a'
+            elif tictactoe['a'] == 2 and tictactoe['g'] == 2 and tictactoe['d'] != 1:
+                throw = 'd'
+
+                # beh
+            elif tictactoe['b'] == 2 and tictactoe['e'] == 2 and tictactoe['h'] != 1:
+                throw = 'h'
+            elif tictactoe['h'] == 2 and tictactoe['e'] == 2 and tictactoe['b'] != 1:
+                throw = 'b'
+            elif tictactoe['h'] == 2 and tictactoe['b'] == 2 and tictactoe['e'] != 1:
+                throw = 'e'
+
+                # cfi
+            elif tictactoe['c'] == 2 and tictactoe['f'] == 2 and tictactoe['i'] != 1:
+                throw = 'i'
+            elif tictactoe['i'] == 2 and tictactoe['f'] == 2 and tictactoe['c'] != 1:
+                throw = 'c'
+            elif tictactoe['c'] == 2 and tictactoe['i'] == 2 and tictactoe['f'] != 1:
+                throw = 'f'
+
+
+            # winblock
+            # abc
+            elif tictactoe['a'] == 1 and tictactoe['b'] == 1 and tictactoe['c'] != 2:
+                throw = 'c'
+            elif tictactoe['b'] == 1 and tictactoe['c'] == 1 and tictactoe['a'] != 2:
+                throw = 'a'
+            elif tictactoe['c'] == 1 and tictactoe['a'] == 1 and tictactoe['b'] != 2:
+                throw = 'b'
+
+                # def
+            elif tictactoe['d'] == 1 and tictactoe['e'] == 1 and tictactoe['f'] != 2:
+                throw = 'f'
+            elif tictactoe['f'] == 1 and tictactoe['e'] == 1 and tictactoe['d'] != 2:
+                throw = 'd'
+            elif tictactoe['f'] == 1 and tictactoe['d'] == 1 and tictactoe['b'] != 2:
+                throw = 'b'
+
+                # ghi
+            elif tictactoe['g'] == 1 and tictactoe['h'] == 1 and tictactoe['i'] != 2:
+                throw = 'i'
+            elif tictactoe['i'] == 1 and tictactoe['h'] == 1 and tictactoe['g'] != 2:
+                throw = 'g'
+            elif tictactoe['i'] == 1 and tictactoe['g'] == 1 and tictactoe['h'] != 2:
+                throw = 'h'
+
+                # aei
+            elif tictactoe['a'] == 1 and tictactoe['e'] == 1 and tictactoe['i'] != 2:
+                throw = 'i'
+            elif tictactoe['a'] == 1 and tictactoe['i'] == 1 and tictactoe['e'] != 2:
+                throw = 'e'
+            elif tictactoe['i'] == 1 and tictactoe['e'] == 1 and tictactoe['a'] != 2:
+                throw = 'a'
+
+                # ceg
+            elif tictactoe['c'] == 1 and tictactoe['e'] == 1 and tictactoe['g'] != 2:
+                throw = 'g'
+            elif tictactoe['g'] == 1 and tictactoe['e'] == 1 and tictactoe['c'] != 2:
+                throw = 'c'
+            elif tictactoe['g'] == 1 and tictactoe['c'] == 1 and tictactoe['e'] != 2:
+                throw = 'e'
+
+                # adg
+            elif tictactoe['a'] == 1 and tictactoe['d'] == 1 and tictactoe['g'] != 2:
+                throw = 'g'
+            elif tictactoe['g'] == 1 and tictactoe['d'] == 1 and tictactoe['a'] != 2:
+                throw = 'a'
+            elif tictactoe['a'] == 1 and tictactoe['g'] == 1 and tictactoe['d'] != 2:
+                throw = 'd'
+
+                # beh
+            elif tictactoe['b'] == 1 and tictactoe['e'] == 1 and tictactoe['h'] != 2:
+                throw = 'h'
+            elif tictactoe['h'] == 1 and tictactoe['e'] == 1 and tictactoe['b'] != 2:
+                throw = 'b'
+            elif tictactoe['h'] == 1 and tictactoe['b'] == 1 and tictactoe['e'] != 2:
+                throw = 'e'
+
+                # cfi
+            elif tictactoe['c'] == 1 and tictactoe['f'] == 1 and tictactoe['i'] != 2:
+                throw = 'i'
+            elif tictactoe['i'] == 1 and tictactoe['f'] == 1 and tictactoe['c'] != 2:
+                throw = 'c'
+            elif tictactoe['c'] == 1 and tictactoe['i'] == 1 and tictactoe['f'] != 2:
+                throw = 'f'
+            else:
+                throw = outcomes.pop()
+
+            # end move selector start move processing
+            tictactoe[throw] = 2  # updates move registrar
+            outcomes.discard(throw)  # updates move pool removing selection
+
+            # updates and prints board
+            if throw in ['a', 'b', 'c']:
+                tboard[tictact[throw]] = 'o'
+            if throw in ['d', 'e', 'f']:
+                mboard[tictact[throw]] = 'o'
+            if throw in ['g', 'h', 'i']:
+                bboard[tictact[throw]] = 'o'
+            await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+
+            # WIN CONDITION FOR COMPUTER
+            if tictactoe['a'] == 2 and tictactoe['b'] == 2 and tictactoe['c'] == 2:
+                await ctx.channel.purge(limit=6)
+                await ctx.send('It appears I am the victor, GG')
+                await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+                win = True
+                return
+            if tictactoe['d'] == 2 and tictactoe['e'] == 2 and tictactoe['f'] == 2:
+                await ctx.channel.purge(limit=6)
+                await ctx.send('It appears I am the victor, GG')
+                await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+                win = True
+                return
+            if tictactoe['g'] == 2 and tictactoe['h'] == 2 and tictactoe['i'] == 2:
+                await ctx.channel.purge(limit=6)
+                await ctx.send('It appears I am the victor, GG')
+                await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+                win = True
+                return
+            if tictactoe['a'] == 2 and tictactoe['e'] == 2 and tictactoe['i'] == 2:
+                await ctx.channel.purge(limit=6)
+                await ctx.send('It appears I am the victor, GG')
+                await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+                win = True
+                return
+            if tictactoe['c'] == 2 and tictactoe['e'] == 2 and tictactoe['g'] == 2:
+                await ctx.channel.purge(limit=6)
+                await ctx.send('It appears I am the victor, GG')
+                await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+                win = True
+                return
+            if tictactoe['a'] == 2 and tictactoe['d'] == 2 and tictactoe['g'] == 2:
+                await ctx.channel.purge(limit=6)
+                await ctx.send('It appears I am the victor, GG')
+                await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+                win = True
+                return
+            if tictactoe['b'] == 2 and tictactoe['e'] == 2 and tictactoe['h'] == 2:
+                await ctx.channel.purge(limit=6)
+                await ctx.send('It appears I am the victor, GG')
+                await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+                win = True
+                return
+            if tictactoe['c'] == 2 and tictactoe['f'] == 2 and tictactoe['i'] == 2:
+                await ctx.channel.purge(limit=6)
+                await ctx.send('It appears I am the victor, GG')
+                await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+                win = True
+                return
+
+        else:
+            await ctx.send('.\n {} \n {} \n {}'.format(tboard, mboard, bboard))
+            await ctx.send('a tie! ')
+            win = True
+            return
+        counter +=1
 
 
 
